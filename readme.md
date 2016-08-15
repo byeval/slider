@@ -15,16 +15,41 @@ Just another jQuery slider plugin.
 ```
 
 ## Options
+
+### `speed(Number)`
+Set slider switch animation duration in millisecond, default 400
+
+### `easing(String)`
+Which easing function to use for the transition
+
+### `duration(Number)`
+Every single slider display duration
+
+### `direction(String)`
+Which direction the slider to scroll, default 'horizontal', can also be set to 'vertical'
+
+### `autoPlay(Boolean)`
+Whether auto start
+
+### `showNav(Boolean)`
+Whether show slider indicators
+
+### `showArrow(Boolean)`
+Whether show prev and next arrows
+
+### `onActive(Function)`
+Callback function when slider finish the transition
+
 ```
 Slider.defaults = {
-	speed: 400, // speed the slider switch
-	easing: 'swing', // which easing function to use for the transition
-	duration: 3000, // 
-	direction: 'horizontal', // which direction the slider scroll, support 'horizontal' and 'vertical'
-	autoPlay: true, // wether auto start scroll
-	showNav: true, // wether show slider indicators
-	showArrow: true, // wether show arrow
-	onActive: null // callback function when slider finish the transition
+	speed: 400, 
+	easing: 'swing', 
+	duration: 3000, 
+	direction: 'horizontal', 
+	autoPlay: true, 
+	showNav: true, 
+	showArrow: true,
+	onActive: null
 }
 ```
 
@@ -41,7 +66,8 @@ slide to a specify index slider.
 
 
 ## Demo
-See in [jsfidder](https://jsfiddle.net/p8L1oynh/7/)
+
+[link](https://xuhong.github.io/slider)
 
 ## Author
 [xuhong](https://github.com/xuhong)
