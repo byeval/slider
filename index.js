@@ -1,122 +1,124 @@
-(function (factory) {
+;(function (factory) {
   if (typeof module === 'object' && typeof module.exports === 'object') {
-    factory(require('jquery'));
+    factory(require('jquery'))
   } else if (typeof define === 'function' && define.amd) {
-    define([], factory(window.jQuery));
+    define([], factory(window.jQuery))
   } else {
-    factory(window.jQuery);
+    factory(window.jQuery)
   }
-} (function ($) {
-  function Slider(elem, options) {
+}(function ($) {
+  function Slider (elem, options) {
+    this.$elem = elem
+    this.options = options
+    this.total = 0
+    this.current = 0
+    this.interval = null
+    this.$slides = null
+    this.$container = null
+
+    this._init()
+  }
+
+  Slider.prototype._init = function () {
     var self = this
-    self.$elem = elem
-    self.options = options
-    self.total = 0
-    self.current = 0
-    self.interval = null
-    self.sliding = false
-    self.$slides = null
+    this.$container = this.$elem.find('.slider-inner')
+    this.$slides = this.$container.children('.item')
+    this.total = this.$slides.length
 
-    // 初始化
-    var init = function () {
-      self.$container = self.$elem.find('.slider-inner')
-      self.$slides = self.$container.children('.item')
-      self.total = self.$slides.length
-
-      var prop = 'width'
-      if (self.options.direction === 'vertical') {
-        prop = 'height'
-      }
-
-      // 设置容器尺寸和slide尺寸
-      self.$container.css(prop, (self.total * 100) + '%')
-      self.$slides.css(prop, (100 / self.total) + '%')
-
-      self.options.autoPlay && self.play()
-      self.options.showNav && createNav()
-      self.options.showArrow && createArrow()
-
-      return self.slideTo(self.current)
+    var prop = 'width'
+    if (this.options.direction === 'vertical') {
+      prop = 'height'
     }
 
-    var createNav = function () {
+    // 设置容器尺寸和slide尺寸
+    this.$container.css(prop, (this.total * 100) + '%')
+    this.$slides.css(prop, (100 / this.total) + '%')
+
+    this.options.autoPlay && this.play()
+    this.options.showNav && createNav()
+    this.options.showArrow && createArrow()
+
+    function createNav () {
       var $nav = $('<ul class="slider-indicators"></ul>')
       var $li = ''
       for (var i = 0; i < self.total; i++) {
         $li += '<li data-slide-to="' + i + '"></li>'
       }
       self.$navs = $nav.append($li)
-      self.$elem.append($nav).on('click', '.slider-indicators li', function(e){
-      	e.preventDefault()
+      self.$elem.append($nav).on('click', '.slider-indicators li', function (e) {
+        e.preventDefault()
         self.slideTo($(this).attr('data-slide-to'))
       })
     }
 
-    var createArrow = function () {
+    function createArrow () {
       var arrow = '<a data-slide-action="prev" class="slider-arrow prev-arrow"><</a><a data-slide-action="next" class="slider-arrow next-arrow">></a>'
-      self.$elem.append(arrow).on('click', '.slider-arrow', function(e){
+      self.$elem.append(arrow).on('click', '.slider-arrow', function (e) {
         e.preventDefault()
         var action = $(this).attr('data-slide-action')
         self[action]()
       })
+    }
+    return this
   }
 
-    var setCurrent = function(pos){
-      if(pos < 0){
-        pos= self.total -1
+  Slider.prototype._setCurrent = function (pos) {
+    if (pos < 0) {
+      pos = this.total - 1
+    }
+    this.current = pos
+    if (this.options.showNav) {
+      this.$navs.find('[data-slide-to="' + pos + '"]').addClass('active').siblings().removeClass('active')
+    }
+    this.$slides.eq(this.current).addClass('active').siblings().removeClass('active')
+    return this
+  }
+
+  Slider.prototype.slideTo = function (pos) {
+    var self = this
+    this._setCurrent(pos)
+
+    if (this.options.autoPlay) {
+      this.clear().play()
+    }
+    var prop = 'left'
+    if (this.options.direction === 'vertical') {
+      prop = 'top'
+    }
+    var style = {}
+    style[prop] = -(100 * this.current) + '%'
+
+    this.$container.animate(style, this.options.speed, this.options.easing, function () {
+      if (self.options.onActive) {
+        self.options.onActive.call(self, self.current)
       }
-      self.current = pos
-      if(self.options.showNav){
-        self.$navs.find('[data-slide-to="' + pos + '"]').addClass('active').siblings().removeClass('active')
-      }
-      self.$slides.eq(self.current).addClass('active').siblings().removeClass('active')
-      return self
-    }
+    })
+    return this
+  }
 
-    self.slideTo = function (pos) {
-      setCurrent(pos)
-      
-      if (self.options.autoPlay) {
-        self.clear().play()
-      }
-      var prop = 'left'
-      if(self.options.direction === 'vertical'){
-        prop = 'top'
-      }
-      var style = {}
-      style[prop] = -(100 * pos) + '%'
-      
-      return self.$container.animate(style, self.options.speed, self.options.easing, function(){
-        if(self.options.onActive){
-          self.options.onActive.call(this,self.current)
-        }
-      })
+  Slider.prototype.next = function next () {
+    var pos = this.current + 1
+    if (pos >= this.total) {
+      pos = 0
     }
+    return this.slideTo(pos)
+  }
 
-    self.next = function next() {
-      var pos = self.current + 1
-      if (pos >= self.total) {
-        pos = 0
-      }
-      return self.slideTo(pos)
-    }
+  Slider.prototype.prev = function prev () {
+    return this.slideTo(this.current - 1)
+  }
 
-    self.prev = function prev() {
-      return self.slideTo(self.current - 1)
-    }
+  Slider.prototype.play = function () {
+    var self = this
+    this.interval = setTimeout(function () {
+      self.next()
+    }, self.options.duration)
+    return this
+  }
 
-    self.play = function () {
-      self.interval = setTimeout(function () {
-        self.next()
-      }, self.options.duration)
-    }
-
-    self.clear = function () {
-      clearTimeout(self.interval)
-      return self
-    }
-
-    return init()
+  Slider.prototype.clear = function () {
+    clearTimeout(this.interval)
+    return this
   }
 
   // 默认配置
@@ -131,16 +133,18 @@
     onActive: null
   }
 
-  $.fn.Slider = function (options) {
-    return this.each(function () {
-      var $this = $(this)
-      var opts = $.extend({}, Slider.defaults, options)
-
-      if ($this.data('slider')) {
-        return $this.data('slider')
-      } else {
-        return $this.data('slider', new Slider($this, opts))
-      }
-    })
+  $.fn.Slider = function () {
+    var elem, options
+    if (this instanceof $) {
+      elem = this
+      options = arguments[0]
+    } else {
+      elem = $(arguments[0])
+      options = arguments[1]
+    }
+    var opts = $.extend({}, Slider.defaults, options)
+    var slider = new Slider(elem, opts)
+    elem.data('slider', slider)
+    return slider
   }
-} ))
+}))
