@@ -1,5 +1,5 @@
 # Slider
-Just another jQuery slider plugin.
+Just another jQuery slider plugin. [demo](https://xuhong.github.io/slider)
 
 ## Usage
 ```
@@ -67,7 +67,7 @@ slide to a specify index slider.
 
 ## Demo
 
-[link](https://xuhong.github.io/slider)
+[https://xuhong.github.io/slider](https://xuhong.github.io/slider)
 
 ## Author
 [xuhong](https://github.com/xuhong)
