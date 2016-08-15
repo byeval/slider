@@ -1,0 +1,27 @@
+{
+  "name": "slider",
+  "version": "0.0.1",
+  "description": "just another jQuery slider plugin.",
+  "main": "./dist/slider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuhong/slider.git"
+  },
+  "keywords": [
+    "slider",
+    "jquery"
+  ],
+  "author": "xuhong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xuhong/slider/issues"
+  },
+  "homepage": "https://github.com/xuhong/slider#readme",
+  "devDependencies": {
+    "webpack": "^1.13.1"
+  }
+}
