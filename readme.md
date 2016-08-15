@@ -41,7 +41,7 @@ slide to a specify index slider.
 
 
 ## Demo
-See in [jsfidder](https://jsfiddle.net/p8L1oynh/5/)
+See in [jsfidder](https://jsfiddle.net/p8L1oynh/7/)
 
 ## Author
 [xuhong](https://github.com/xuhong)
