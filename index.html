@@ -79,6 +79,8 @@
 </head>
 
 <body>
+    <h1>slider example</h1>
+
     <h2>horizontal</h2>
     <div class="hslider slider">
         <div class="slider-inner">
@@ -96,6 +98,9 @@
             </div>
         </div>
     </div>
+    <pre>
+        var hslider = $('.hslider').Slider()
+    </pre>
     <h2>vertical</h2>
     <div class="vslider slider">
         <div class="slider-inner">
@@ -113,6 +118,11 @@
             </div>
         </div>
     </div>
+    <pre>
+        var vslider = $('.vslider').Slider({
+            direction: 'vertical'
+        })
+    </pre>
     <h2>use javascript to control the move.</h2>
     <div class="jslider slider">
         <div class="slider-inner">
@@ -133,6 +143,20 @@
     <button class="btn-prev">prev</button>
     <button class="btn-next">next</button>
     <span class="active-now"></span>
+    <pre>
+        var jslider = new $.fn.Slider('.jslider', {
+            onActive: function(i) {
+                $('.active-now').html('now active: ' + i)
+            }
+        })
+
+        $('.btn-prev').on('click', function(e) {
+            jslider.prev()
+        })
+        $('.btn-next').on('click', function(e) {
+            jslider.next()
+        })
+    </pre>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.rawgit.com/xuhong/slider/master/dist/slider.js"></script>
     <script>
