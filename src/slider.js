@@ -27,11 +27,14 @@
     this.$slides.css(prop, (100 / this.total) + '%')
 
     this.options.autoPlay && this.play()
-    this.options.showNav && createNav()
-    this.options.showArrow && createArrow()
-
-    function createNav () {
-      var $nav = $('<ul class="slider-indicators"></ul>')
+    this.options.showNav && this.createNav()
+    this.options.showArrow && this.createArrow()
+    
+    return this
+  }
+  
+  Slider.prototype.createNav = function(){
+    var $nav = $('<ul class="slider-indicators"></ul>')
       var $li = ''
       for (var i = 0; i < self.total; i++) {
         $li += '<li data-slide-to="' + i + '"></li>'
@@ -41,19 +44,18 @@
         e.preventDefault()
         self.slideTo($(this).attr('data-slide-to'))
       })
-    }
-
-    function createArrow () {
-      var arrow = '<a data-slide-action="prev" class="slider-arrow prev-arrow"><</a><a data-slide-action="next" class="slider-arrow next-arrow">></a>'
+  }
+  
+  Slider.prototype.createArrow = function(){
+    var self = this
+    var arrow = '<a data-slide-action="prev" class="slider-arrow prev-arrow"><</a><a data-slide-action="next" class="slider-arrow next-arrow">></a>'
       self.$elem.append(arrow).on('click', '.slider-arrow', function (e) {
         e.preventDefault()
         var action = $(this).attr('data-slide-action')
         self[action]()
       })
-    }
-    return this
   }
-
+  
   Slider.prototype._setCurrent = function (pos) {
     if (pos < 0) {
       pos = this.total - 1
